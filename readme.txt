@@ -1,6 +1,7 @@
 === Tour Operator Plugin ===
 Contributors: TourCMS
 Tags: 
+Stable tag: 0.1
 Requires at least: 3.0
 Tested up to: 3.0
 
