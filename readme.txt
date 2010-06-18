@@ -9,8 +9,6 @@ Adds extra functonality to WordPress to aid creating travel websites.
 
 == Description ==
 
-Tour Operator Plugin by TourCMS
-
 Build websites selling travel products online.
 
 Store complex pricing, availability, bookings and customer data secure in [TourCMS] (www.tourcms.com). Use WordPress to design and build your website, integrating with TourCMS for the booking/enquiry process.
