@@ -167,9 +167,17 @@
 											<tr>
 												<td class="row-title" title="[has_sale]">On sale?</td>
 												<td class="desc"><?php 
-													if((int)get_post_meta( $post->ID, 'tourcms_wp_has_sale', true )==1)
-														echo "Yes (1)";
-													else
+													if((int)get_post_meta( $post->ID, 'tourcms_wp_has_sale', true )==1) {
+														echo "Yes (1) - ";
+														$months = array("jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec");
+														$monthstr = "";
+														foreach($months as $month) {
+															if((int)get_post_meta( $post->ID, 'tourcms_wp_has_sale_'.$month, true )==1) {
+																$monthstr .= ucwords($month).", ";
+															}
+														}
+														print substr($monthstr, 0, strlen($monthstr)-2).".";
+													} else
 														echo "No (0)";
 													 ?></td>
 											</tr>
@@ -185,8 +193,8 @@
 													?></td>
 											</tr>
 											<tr>
-												<td class="row-title" title="[from_price]">From price</td>
-												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_from_price', true ); ?></td>
+												<td class="row-title" title="[from_price_display]">From price (display)</td>
+												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_from_price_display', true ); ?></td>
 											</tr>
 											<tr class="alternate">
 												<td class="row-title" title="[sale_currency]">Sale currency</td>
@@ -317,12 +325,27 @@
 				update_post_meta( $post_id, 'tourcms_wp_last_updated', time());
 				update_post_meta( $post_id, 'tourcms_wp_book_url', (string)$tour->book_url);
 				update_post_meta( $post_id, 'tourcms_wp_from_price', (string)$tour->from_price);
+				update_post_meta( $post_id, 'tourcms_wp_from_price_display', (string)$tour->from_price_display);
 				update_post_meta( $post_id, 'tourcms_wp_sale_currency', (string)$tour->sale_currency);
 				update_post_meta( $post_id, 'tourcms_wp_geocode_start', (string)$tour->geocode_start);
 				update_post_meta( $post_id, 'tourcms_wp_geocode_end', (string)$tour->geocode_end);
 				update_post_meta( $post_id, 'tourcms_wp_duration_desc', (string)$tour->duration_desc);
 				update_post_meta( $post_id, 'tourcms_wp_available', (string)$tour->available);	
 				update_post_meta( $post_id, 'tourcms_wp_has_sale', (string)$tour->has_sale);	
+				
+				
+				update_post_meta( $post_id, 'tourcms_wp_has_sale_jan', (string)$tour->has_sale_jan);
+				update_post_meta( $post_id, 'tourcms_wp_has_sale_feb', (string)$tour->has_sale_feb);
+				update_post_meta( $post_id, 'tourcms_wp_has_sale_mar', (string)$tour->has_sale_mar);
+				update_post_meta( $post_id, 'tourcms_wp_has_sale_apr', (string)$tour->has_sale_apr);
+				update_post_meta( $post_id, 'tourcms_wp_has_sale_may', (string)$tour->has_sale_may);
+				update_post_meta( $post_id, 'tourcms_wp_has_sale_jun', (string)$tour->has_sale_jun);
+				update_post_meta( $post_id, 'tourcms_wp_has_sale_jul', (string)$tour->has_sale_jul);
+				update_post_meta( $post_id, 'tourcms_wp_has_sale_aug', (string)$tour->has_sale_aug);
+				update_post_meta( $post_id, 'tourcms_wp_has_sale_sep', (string)$tour->has_sale_sep);
+				update_post_meta( $post_id, 'tourcms_wp_has_sale_oct', (string)$tour->has_sale_oct);
+				update_post_meta( $post_id, 'tourcms_wp_has_sale_nov', (string)$tour->has_sale_nov);
+				update_post_meta( $post_id, 'tourcms_wp_has_sale_dec', (string)$tour->has_sale_dec);
 			
 				
 				// Optional fields
@@ -386,7 +409,7 @@
 								<label for="tourcms_wp_channel">Channel ID</label>
 							</th>
 							<td>
-								<input type="text" name="tourcms_wp_channel" size="6" value="<?php echo get_option('tourcms_wp_channel'); ?>" /> <span class="description">Set this to 0 if you are a Marketplace Partner</span>
+								<input type="text" name="tourcms_wp_channel" size="6" value="<?php echo get_option('tourcms_wp_channel'); ?>" autocomplete="false" /> <span class="description">Set this to 0 if you are a Marketplace Partner</span>
 							</td>
 						</tr>
 						<tr valign="top">
@@ -394,7 +417,7 @@
 								<label for="tourcms_wp_apikey">API Key</label>
 							</th>
 							<td>
-								<input type="password" name="tourcms_wp_apikey" value="<?php echo get_option('tourcms_wp_apikey'); ?>" />
+								<input type="password" name="tourcms_wp_apikey" value="<?php echo get_option('tourcms_wp_apikey'); ?>"  autocomplete="false" />
 							</td>
 						</tr>
 					</table>
@@ -547,10 +570,9 @@
 	function tourcms_wp_doprice() {
 			global $post;
 	
-			$from_price = get_post_meta( $post->ID, 'tourcms_wp_from_price', true );
+			$from_price = get_post_meta( $post->ID, 'tourcms_wp_from_price_display', true );
 
 			if($from_price<>"") {
-				$from_price = round($from_price);
 				echo "<span class='fromprice'>".__( 'from', 'tourcms_wp' )." ".$from_price."</span>";
 			}
 	}
@@ -569,6 +591,7 @@
 	add_shortcode('has_sale', 'tourcms_wp_shortcode');
 	add_shortcode('book_url', 'tourcms_wp_shortcode');
 	add_shortcode('from_price', 'tourcms_wp_shortcode');
+	add_shortcode('from_price_display', 'tourcms_wp_shortcode');
 	add_shortcode('sale_currency', 'tourcms_wp_shortcode');
 	add_shortcode('geocode_start', 'tourcms_wp_shortcode');
 	add_shortcode('geocode_end', 'tourcms_wp_shortcode');
@@ -607,4 +630,6 @@
 	
 	// Include Map Widget
 	require_once 'widgets/tourMap/tourMap.php';
+	// Include Availability Widget
+	require_once 'widgets/tourAvail/tourAvail.php';
 ?>
