@@ -1,4 +1,4 @@
-=== Tour and Activity Operator Ecommerce Plugin ===
+=== Tour & Activity Operator Ecommerce Plugin ===
 Contributors: TourCMS
 Tags:
 Requires at least: 3.0
