@@ -1,4 +1,4 @@
-=== Tour Operator Plugin ===
+=== Tour & Activity Operator Ecommerce Plugin ===
 Contributors: TourCMS
 Tags: 
 Stable tag: 0.2
