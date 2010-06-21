@@ -14,7 +14,9 @@ Build websites selling travel products online.
 
 This plugin extends WordPress with new Post types for Tours/Hotels (and other travel products) and integrates with the TourCMS booking engine. Upload your prices once, ensure you are always displaying live pricing and booking against live availability. 
 
-Store complex pricing, availability, bookings and customer data secure in [TourCMS](www.tourcms.com). Use WordPress to design and build your website, seamlessly integrating with TourCMS for the booking/enquiry process.
+Includes widgets for displaying products on Google Maps or showing an availability overview and a specially designed theme is available free of charge from our website (or use your existing theme).
+
+Store complex pricing, availability, bookings and customer data secure in [TourCMS](http://www.tourcms.com "TourCMS"). Use WordPress to design and build your website, seamlessly integrating with TourCMS for the booking/enquiry process.
 
 The TourCMS booking engine is configurable in 14+ languages (let us know if you need one we don't currently support) and integrates with various payment gateway solutions from around the world.
 
