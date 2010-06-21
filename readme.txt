@@ -2,6 +2,7 @@
 Contributors: TourCMS
 Tags:
 Version: 0.3
+Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
 Tested up to: 3.0
 Stable tag: 0.3
