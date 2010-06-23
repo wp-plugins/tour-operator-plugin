@@ -1,11 +1,11 @@
 === Tour & Activity Operator Ecommerce Plugin ===
 Contributors: TourCMS
 Tags:
-Version: 0.3
+Version: 0.4
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.3
+Stable tag: 0.4
 
 
 Adds extra functonality to WordPress to aid creating travel websites.
@@ -22,12 +22,25 @@ Store complex pricing, availability, bookings and customer data secure in [TourC
 
 The TourCMS booking engine is configurable in 14+ languages (let us know if you need one we don't currently support) and integrates with various payment gateway solutions from around the world.
 
-
 == Installation ==
 
-[Installation instructions](http://www.tourcms.com/support/webdesign/wordpress/installation.php "Installation instructions")
+Full installation instructions are available on our website:
+
+[View installation instructions](http://www.tourcms.com/support/webdesign/wordpress/installation.php "Installation instructions")
+
+== Screenshots ==
+
+1. Google Maps Widget
+2. Availability Widget
+3. Some of the Meta data pulled from TourCMS, accessible via Shortcodes
+4. Editing Products types / Locations
+5. Product types / Locations appear in the Menu editor
 
 == Changelog ==
+
+= 0.4 =
+* Added screenshots
+* Improved readme.txt
 
 = 0.3 =
 * Updated lead in prices to use the new 'display' price which was added to the TourCMS API (includes currency symbol / description)
