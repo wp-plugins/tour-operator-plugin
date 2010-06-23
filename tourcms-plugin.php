@@ -1,9 +1,9 @@
 <?php
 	/*
 	Plugin Name: TourCMS
-	Plugin URI: http://www.tourcms.com
-	Description: The Official TourCMS Plugin. Display products pulled from a TourCMS account via the Live XML Marketplace API
-	Version: 0.1
+	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
+	Description: Adds extra functonality to WordPress to aid creating travel websites.
+	Version: 0.4
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
