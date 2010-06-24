@@ -29,9 +29,14 @@ class tourMap extends WP_Widget {
 			<div id="<?php echo $widget_id."-map"; ?>" class=""></div>
 			<script type="text/javascript">
 				jQuery(document).ready(function() {
+					var mapwidth = jQuery('#<?php echo $widget_id."-map"; ?>').width();
+					
 					jQuery('#<?php echo $widget_id."-map"; ?>').append('<iframe />');
 					var tcmsmapframe = jQuery('#<?php echo $widget_id."-map"; ?> iframe');
-					var tcmsmapurl = "<?php echo plugins_url( 'map.php', __FILE__ ); ?>?width=" + tcmsmapframe.width() + '&height=' + tcmsmapframe.height() + '&zoomlevel=' + "<?php echo $instance['zoomlevel']; ?>" + '&apikey=' + "<?php echo $instance['apikey']; ?>" + '&latlng=' + "<?php echo $start; ?>";
+					
+					tcmsmapframe.width(mapwidth);
+					
+					var tcmsmapurl = "<?php echo plugins_url( 'map.php', __FILE__ ); ?>?width=" + mapwidth + '&height=' + tcmsmapframe.height() + '&zoomlevel=' + "<?php echo $instance['zoomlevel']; ?>" + '&apikey=' + "<?php echo $instance['apikey']; ?>" + '&latlng=' + "<?php echo $start; ?>";
 					tcmsmapframe.attr('src', tcmsmapurl); 
 				});
 				
