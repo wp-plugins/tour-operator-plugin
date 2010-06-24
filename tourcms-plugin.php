@@ -3,7 +3,7 @@
 	Plugin Name: TourCMS
 	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 	Description: Adds extra functonality to WordPress to aid creating travel websites.
-	Version: 0.4
+	Version: 0.5
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
@@ -25,6 +25,9 @@
 	// Add any standard booking engines
 	add_action('tourcms_wp_book', 'tourcms_wp_dobook');
 	add_action('tourcms_wp_price', 'tourcms_wp_doprice');
+	
+	// Add a "Settings" link to the menu
+	add_filter( 'plugin_row_meta', 'set_plugin_meta', 10, 2 );
 	
 	function tourcms_init() {
 		if ( !is_admin() )
@@ -59,6 +62,16 @@
 		  'query_var' => true,
 		  'rewrite' => array( 'slug' => 'tours-by-location' )
 		));
+	}
+	
+	function set_plugin_meta($links, $file) {
+	 $plugin = 'tourcms_wp';
+		return array_merge(
+				$links,
+				array( sprintf( '<a href="options-general.php?page=%s">%s</a>', $plugin, __('Settings') ) )
+			);
+	 
+		return $links;
 	}
 	
 	// Admin menu page details
@@ -109,14 +122,15 @@
 					?>	
 
 							<div class="form-field form-required">
-								<p>&nbsp;</p>
+								
 								<?php
 									if($results->error!="OK") {
-										print "<p>Sorry there has been an error, the message returned by TourCMS was:</p>";
+										print "<p>Unable to link this Tour/Hotel with a product in TourCMS at this time, the following error message was returned:</p>";
 										print "<p>".$results->error."</p>";
+										print '<p>You can find <a href="http://www.tourcms.com/support/api/mp/error_messages.php" target="_blank">explanations of these error messages</a>, view the <a href="http://www.tourcms.com/support/webdesign/wordpress/installation.php" target="_blank">plugin installation instructions</a> or <a href="http://www.tourcms.com/company/contact.php" target="_blank">contact us</a> if you need some help.</p>';
 									} else {
 									// Plain text field
-									echo '<label for="tourcms_wp_tourid">Tour</label>';
+									echo '<p>&nbsp;</p><label for="tourcms_wp_tourid">Tour</label>';
 									?>
 									<select name="tourcms_wp_tourid">
 										<!--option value="0">Do not associate with a TourCMS Tour/Hotel</option-->
@@ -250,7 +264,7 @@
 					<?php
 				} else { ?>
 						<div class="form-field form-required">
-						<p>You must configure the TourCMS plugin first</p>
+						<p>You must configure the <a href="options-general.php?page=tourcms_wp">TourCMS Plugin Settings</a> before you can link this Tour/Hotel to a product.</p>
 						</div>
 					<?php
 				} ?>
@@ -395,21 +409,14 @@
 					<?php settings_fields('tourcms_wp_settings'); ?>
 					<h3>API Settings</h3>
 					<p>You can find your settings by logging into TourCMS then heading to <strong>Configuration &amp; Setup</strong> &gt; <strong>API</strong> &gt; <strong>XML API</strong>.</p>
+					<input type="hidden" name="tourcms_wp_marketplace" value="0" />
 					<table class="form-table">
-						<tr valign="top">
-							<th scope="row">
-								<label for="tourcms_wp_marketplace">Marketplace ID</label>
-							</th>
-							<td>
-								<input type="text" name="tourcms_wp_marketplace" value="<?php echo get_option('tourcms_wp_marketplace'); ?>" /> <span class="description">Set this to 0 if you are a Supplier / Tour Operator</span>
-							</td>
-						</tr>
 						<tr valign="top">
 							<th scope="row">
 								<label for="tourcms_wp_channel">Channel ID</label>
 							</th>
 							<td>
-								<input type="text" name="tourcms_wp_channel" size="6" value="<?php echo get_option('tourcms_wp_channel'); ?>" autocomplete="false" /> <span class="description">Set this to 0 if you are a Marketplace Partner</span>
+								<input type="text" name="tourcms_wp_channel" size="6" value="<?php echo get_option('tourcms_wp_channel'); ?>" autocomplete="false" /> <!--span class="description">Set this to 0 if you are a Marketplace Partner</span-->
 							</td>
 						</tr>
 						<tr valign="top">
