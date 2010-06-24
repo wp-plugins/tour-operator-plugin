@@ -144,7 +144,20 @@
 										?>
 									</select>
 									<?php if($curval>0) : ?>
-									<p><br />The following data is refreshed from TourCMS each time you Update this page:</p>
+									<p><?php 
+									(get_option('tourcms_wp_update_frequency')=="") ? $tourcms_wp_update_frequency = 14400 : $tourcms_wp_update_frequency = intval(get_option('tourcms_wp_update_frequency'));
+									
+									if($tourcms_wp_update_frequency>1) {
+										$hours = $tourcms_wp_update_frequency / 3600;
+										if($hours > 1)
+											$hours = $hours." hours";
+										else
+											$hours = "hour";
+										echo "The following data is refreshed from TourCMS each time you save this Tour/Hotel plus automatically every $hours.";
+									} else {
+										echo "The following data is refreshed from TourCMS each time you save this Tour/Hotel.";
+									}
+									?><br /></p>
 									<table class="widefat">
 										<thead>
 											<tr>
@@ -157,20 +170,13 @@
 												<td class="row-title" title="[last_updated]">Last updated</td>
 												<td class="desc" style="overflow: hidden"><?php 
 														$last_updated = get_post_meta( $post->ID, 'tourcms_wp_last_updated', true ); 
-														echo date("r", $last_updated);
 														
-														(get_option('tourcms_wp_update_frequency')=="") ? $tourcms_wp_update_frequency = 14400 : $tourcms_wp_update_frequency = intval(get_option('tourcms_wp_update_frequency'));
+														$time_since_update = time() - $last_updated;
 														
-														if($tourcms_wp_update_frequency>1) {
-															$hours = $tourcms_wp_update_frequency / 3600;
-															if($hours > 1)
-																$hours = $hours." hours";
-															else
-																$hours = "hour";
-															echo " <em>(Updated every time this page is saved plus automatically every $hours)</em>";
-														} else {
-															echo " <em>(Will be updated when this page is saved)</em>";
-														}
+														echo tourcms_wp_convtime($time_since_update)." ago";
+														
+														//echo date("r", $last_updated);
+														
 
 													?></td>
 											</tr>
@@ -633,6 +639,32 @@
 		return $text;
 	}
 	add_shortcode('book_link', 'tourcms_wp_booklink');
+	
+	function tourcms_wp_convtime($seconds)
+		{
+		    $ret = "";
+		
+		    $hours = intval(intval($seconds) / 3600);
+		    if($hours > 0)
+		    {
+		        $ret .= "$hours hours ";
+		    }
+	
+		    $minutes = bcmod((intval($seconds) / 60),60);
+		    if($hours > 0 || $minutes > 0)
+		    {
+		        $ret .= "$minutes minutes ";
+		    }
+		  
+		    //$seconds = bcmod(intval($seconds),60);
+		    //$ret .= "$seconds seconds";
+		
+			if($ret =="")
+				$ret .= "Seconds";
+		
+		    return $ret;
+		}
+	
 	
 	
 	// Include Map Widget
