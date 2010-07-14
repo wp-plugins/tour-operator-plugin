@@ -22,6 +22,10 @@ Store complex pricing, availability, bookings and customer data secure in [TourC
 
 The TourCMS booking engine is configurable in 14+ languages (let us know if you need one we don't currently support) and integrates with various payment gateway solutions from around the world.
 
+**This plugin requires a paid [TourCMS](http://www.tourcms.com "TourCMS") account, free trial accounts are available**
+
+If you have any feedback or queries we'd love to hear from you so please drop by the [TourCMS forums](http://community.tourcms.com "TourCMS forums") or [Send us a message](http://www.tourcms.com/company/contact.php "Send us a message").
+
 == Installation ==
 
 Full installation instructions are available on our website:
