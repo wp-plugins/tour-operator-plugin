@@ -43,7 +43,7 @@ Full installation instructions are available on our website:
 == Changelog ==
 
 = 0.6 =
-* Added more fields (Primary location, Summary, Tour/Hotel Name, Itinerary, Pickup / Dropoff, Extras / Upgrades, Restrictions, Short Description, Long Description)
+* Added more fields (Primary location, Summary, Tour/Hotel Name, Itinerary, Pickup / Dropoff, Extras / Upgrades, Restrictions, Short Description, Long Description).
 
 = 0.5 =
 * Fixed display of Map widget when not using TourCMS Theme
