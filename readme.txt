@@ -1,11 +1,11 @@
 === Tour & Activity Operator Ecommerce Plugin ===
 Contributors: TourCMS
 Tags:
-Version: 0.5
+Version: 0.6
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
-Tested up to: 3.0
-Stable tag: 0.5
+Tested up to: 3.0.3
+Stable tag: 0.6.1
 
 
 Adds extra functonality to WordPress to aid creating travel websites.
@@ -41,6 +41,9 @@ Full installation instructions are available on our website:
 5. Product types / Locations appear in the Menu editor
 
 == Changelog ==
+
+= 0.6 =
+* Added more fields (Primary location, Summary, Tour/Hotel Name, Itinerary, Pickup / Dropoff, Extras / Upgrades, Restrictions, Short Description, Long Description).
 
 = 0.5 =
 * Fixed display of Map widget when not using TourCMS Theme
