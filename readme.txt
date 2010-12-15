@@ -42,6 +42,9 @@ Full installation instructions are available on our website:
 
 == Changelog ==
 
+= 0.7 =
+* Version number fixes - no functional change
+
 = 0.6 =
 * Added more fields (Primary location, Summary, Tour/Hotel Name, Itinerary, Pickup / Dropoff, Extras / Upgrades, Restrictions, Short Description, Long Description).
 
