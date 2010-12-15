@@ -5,7 +5,7 @@ Version: 0.6
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
 Tested up to: 3.0.3
-Stable tag: 0.6
+Stable tag: 0.6.1
 
 
 Adds extra functonality to WordPress to aid creating travel websites.
