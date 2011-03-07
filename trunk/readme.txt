@@ -43,7 +43,7 @@ Full installation instructions are available on our website:
 == Changelog ==
 
 = 0.8 =
-* Fix settings links
+* Fix "Settings" link on plugins page
 
 = 0.7 =
 * Version number fixes - no functional change
