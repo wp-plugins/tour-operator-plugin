@@ -1,11 +1,11 @@
 === Tour & Activity Operator Ecommerce Plugin ===
 Contributors: TourCMS
 Tags:
-Version: 0.7
+Version: 0.8
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
-Tested up to: 3.0.3
-Stable tag: 0.7
+Tested up to: 3.1.0
+Stable tag: 0.8
 
 
 Adds extra functonality to WordPress to aid creating travel websites.

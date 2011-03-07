@@ -3,7 +3,7 @@
 	Plugin Name: TourCMS
 	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 	Description: Adds extra functonality to WordPress to aid creating travel websites.
-	Version: 0.7
+	Version: 0.8
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
@@ -27,7 +27,19 @@
 	add_action('tourcms_wp_price', 'tourcms_wp_doprice');
 	
 	// Add a "Settings" link to the menu
-	add_filter( 'plugin_row_meta', 'set_plugin_meta', 10, 2 );
+	//add_filter( 'plugin_row_meta', 'set_plugin_meta', 10, 2 );
+	$plugin = plugin_basename(__FILE__); 
+	add_filter("plugin_action_links_$plugin", 'tourcms_wp_plugin_settings_link' );
+
+	// Add settings link on plugin page
+	function tourcms_wp_plugin_settings_link($links) { 
+	  $settings_link = '<a href="options-general.php?page=tourcms_wp">Settings</a>'; 
+	  array_push($links, $settings_link); 
+	  return $links; 
+	}
+	
+	
+	
 	
 	function tourcms_init() {
 		if ( !is_admin() )
