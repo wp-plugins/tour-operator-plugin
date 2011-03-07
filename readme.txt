@@ -42,6 +42,9 @@ Full installation instructions are available on our website:
 
 == Changelog ==
 
+= 0.8 =
+* Fix "Settings" link on plugins page
+
 = 0.7 =
 * Version number fixes - no functional change
 
