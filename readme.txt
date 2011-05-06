@@ -4,7 +4,7 @@ Tags:
 Version: 0.9
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
-Tested up to: 3.1.0
+Tested up to: 3.1.2
 Stable tag: 0.9
 
 
