@@ -1,11 +1,11 @@
 === Tour & Activity Operator Ecommerce Plugin ===
 Contributors: TourCMS
 Tags:
-Version: 0.8
+Version: 0.9
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
 Tested up to: 3.1.0
-Stable tag: 0.8
+Stable tag: 0.9
 
 
 Adds extra functonality to WordPress to aid creating travel websites.
@@ -42,8 +42,13 @@ Full installation instructions are available on our website:
 
 == Changelog ==
 
+= 0.9 =
+* Added "Priority" field (Commercial Priority configured in TourCMS)
+* Added ability to manually specify an "Order" for each Tour/Hotel
+* Fixed admin page displaying broken images when less than 6 images are loaded for a Tour
+
 = 0.8 =
-* Fix "Settings" link on plugins page
+* Fix settings links
 
 = 0.7 =
 * Version number fixes - no functional change

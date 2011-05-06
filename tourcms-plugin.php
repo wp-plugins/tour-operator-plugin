@@ -3,7 +3,7 @@
 	Plugin Name: TourCMS
 	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 	Description: Adds extra functonality to WordPress to aid creating travel websites.
-	Version: 0.8
+	Version: 0.9
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
@@ -51,7 +51,7 @@
 				'singular_label' => 'Tour/Hotel',
 				'labels' => array("add_new_item" => "New Tour/Hotel", "edit_item" => "Edit Tour/Hotel", "view_item" => "View Tour/Hotel", "search_items" => "Search Tours/Hotels", "not_found" => "No Tours/Hotels found", "not_found_in_trash" => "No Tours/Hotels found in Trash"),
 				'rewrite' => array("slug" => "tours"),
-				'supports' => array('title', 'editor', 'excerpt', 'thumbnail'),
+				'supports' => array('page-attributes', 'title', 'editor', 'excerpt', 'thumbnail'),
 				'menu_position' => 20,
 				'show_in_nav_menus' => true,
 				'public' => true
@@ -202,6 +202,10 @@
 												<td class="row-title" title="[tour_code]">Tour code</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_tour_code', true ); ?></td>
 											</tr>
+											<tr>
+												<td class="row-title">Priority</td>
+												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_priority', true ); ?> (<?php echo get_post_meta( $post->ID, 'tourcms_wp_priority_num', true ); ?>)</td>
+											</tr>
 											<tr class="alternate">
 												<td class="row-title" title="[has_sale]">On sale?</td>
 												<td class="desc"><?php 
@@ -266,9 +270,13 @@
 												<td class="row-title">Images</td>
 												<td class="desc"><?php 
 													for($i=0; $i<6; $i++) {
+														$img_src = get_post_meta( $post->ID, 'tourcms_wp_image_url_'.$i, true );
+														if($img_src != "") {
 														?>
-														<img src="<?php echo get_post_meta( $post->ID, 'tourcms_wp_image_url_'.$i, true ); ?>" title="<?php echo get_post_meta( $post->ID, 'tourcms_wp_image_desc_'.$i, true ); ?>" style="height: 100px;" />
+														
+														<img src="<?php echo $img_src;  ?>" title="<?php echo get_post_meta( $post->ID, 'tourcms_wp_image_desc_'.$i, true ); ?>" style="height: 100px;" />
 														<? 
+														}
 													}
 												?></td>
 											</tr>
@@ -410,6 +418,19 @@
 				update_post_meta( $post_id, 'tourcms_wp_location', (string)$tour->location);	
 				update_post_meta( $post_id, 'tourcms_wp_summary', (string)$tour->summary);	
 				update_post_meta( $post_id, 'tourcms_wp_shortdesc', (string)$tour->shortdesc);	
+				update_post_meta( $post_id, 'tourcms_wp_priority', (string)$tour->priority);	
+				switch ((string)$tour->priority) {
+				    case "HIGH":
+				        update_post_meta( $post_id, 'tourcms_wp_priority_num', "A");
+				        break;
+				    case "LOW":
+				        update_post_meta( $post_id, 'tourcms_wp_priority_num', "C");
+				        break;
+				    default:
+				    	// MEDIUM
+				        update_post_meta( $post_id, 'tourcms_wp_priority_num', "B");
+				        break;
+				}
 				
 				
 				update_post_meta( $post_id, 'tourcms_wp_has_sale_jan', (string)$tour->has_sale_jan);
