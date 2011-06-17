@@ -3,7 +3,7 @@
 	Plugin Name: TourCMS
 	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 	Description: Adds extra functonality to WordPress to aid creating travel websites.
-	Version: 0.9
+	Version: 0.92
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
@@ -275,7 +275,7 @@
 														?>
 														
 														<img src="<?php echo $img_src;  ?>" title="<?php echo get_post_meta( $post->ID, 'tourcms_wp_image_desc_'.$i, true ); ?>" style="height: 100px;" />
-														<? 
+														<?php
 														}
 													}
 												?></td>

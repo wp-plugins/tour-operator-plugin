@@ -1,11 +1,11 @@
 === Tour & Activity Operator Ecommerce Plugin ===
 Contributors: TourCMS
 Tags:
-Version: 0.9
+Version: 0.92
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
-Tested up to: 3.1.2
-Stable tag: 0.9
+Tested up to: 3.1.3
+Stable tag: 0.92
 
 
 Adds extra functonality to WordPress to aid creating travel websites.
@@ -41,6 +41,12 @@ Full installation instructions are available on our website:
 5. Product types / Locations appear in the Menu editor
 
 == Changelog ==
+
+= 0.92 =
+* Fixed issue when PHP short tags aren't enabled
+
+= 0.91 =
+* Fix missing header issue on install
 
 = 0.9 =
 * Added "Priority" field (Commercial Priority configured in TourCMS)
