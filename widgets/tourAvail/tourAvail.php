@@ -95,7 +95,7 @@ class tourAvail extends WP_Widget {
 						}
 					?>
 				</div><br style="clear: left;"></div>
-			<?
+			<?php
 			echo $after_widget;
 		}
 	}
