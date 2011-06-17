@@ -42,7 +42,7 @@ class tourMap extends WP_Widget {
 				
 				
 			</script>
-			<?
+			<?php
 			echo $after_widget;
 		}
 	}

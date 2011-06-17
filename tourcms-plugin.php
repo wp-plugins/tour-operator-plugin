@@ -3,7 +3,7 @@
 	Plugin Name: TourCMS
 	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 	Description: Adds extra functonality to WordPress to aid creating travel websites.
-	Version: 0.92
+	Version: 0.93
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
@@ -325,7 +325,7 @@
 									<?php else : ?>
 									<p>Additional fields will be displayed here once you have saved this Tour/Hotel.</p>
 									<?php endif ?>
-									<?
+									<?php
 									}
 							?>
 									</div>
@@ -622,7 +622,7 @@
 					</p>
 				</form>
 			</div>
-		<?
+		<?php
 	}
 	
 	// Booking engine hook function
@@ -658,7 +658,7 @@
 				// Standard link
 				?>
 				<p class="booklink"><a href="<?php echo $book_url; ?>"><?php echo $book_text; ?></a></p>
-				<?
+				<?php
 			} else if ($book_style=="popup") {
 				// Popup window
 				$book_height = (int)$book_height;
@@ -667,7 +667,7 @@
 				$book_url .= "&if=1&ifwidth=$if_width";
 				?>
 				<p class="booklink"><a href="<?php echo $book_url; ?>" onclick="window.open(this, '_blank', 'height=<?php echo $book_height; ?>,width=<?php echo $book_width ; ?>,statusbar=0,scrollbars=1'); return false;"><?php echo $book_text; ?></a></p>
-				<?
+				<?php
 			} else if ($book_style=="iframe") {
 				// Iframe
 				$book_height = (int)$book_height;
@@ -685,7 +685,7 @@
 						tcmsbookframe.attr('src', tcmsbookurl); 
 					});
 				</script>
-				<?
+				<?php
 			}
 		}
 	}
