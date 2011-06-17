@@ -275,7 +275,7 @@
 														?>
 														
 														<img src="<?php echo $img_src;  ?>" title="<?php echo get_post_meta( $post->ID, 'tourcms_wp_image_desc_'.$i, true ); ?>" style="height: 100px;" />
-														<? 
+														<?php
 														}
 													}
 												?></td>
