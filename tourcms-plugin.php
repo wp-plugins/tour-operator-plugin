@@ -3,7 +3,7 @@
 	Plugin Name: TourCMS
 	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 	Description: Adds extra functonality to WordPress to aid creating travel websites.
-	Version: 0.93
+	Version: 0.94
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
@@ -42,21 +42,38 @@
 	
 	
 	function tourcms_init() {
+		$allow_non_tourcms = get_option('tourcms_wp_allow_non_tourcms');
+		
 		if ( !is_admin() )
 			wp_enqueue_script('jquery');
 		
-		register_post_type( 'tour',
-			array(
-				'label' => 'Tours/Hotels',
-				'singular_label' => 'Tour/Hotel',
-				'labels' => array("add_new_item" => "New Tour/Hotel", "edit_item" => "Edit Tour/Hotel", "view_item" => "View Tour/Hotel", "search_items" => "Search Tours/Hotels", "not_found" => "No Tours/Hotels found", "not_found_in_trash" => "No Tours/Hotels found in Trash"),
-				'rewrite' => array("slug" => "tours"),
-				'supports' => array('page-attributes', 'title', 'editor', 'excerpt', 'thumbnail'),
-				'menu_position' => 20,
-				'show_in_nav_menus' => true,
-				'public' => true
-			)
-		);
+		if($allow_non_tourcms == 1) {
+			register_post_type( 'tour',
+				array(
+					'label' => 'Tours/Hotels',
+					'singular_label' => 'Tour/Hotel',
+					'labels' => array("add_new_item" => "New Tour/Hotel", "edit_item" => "Edit Tour/Hotel", "view_item" => "View Tour/Hotel", "search_items" => "Search Tours/Hotels", "not_found" => "No Tours/Hotels found", "not_found_in_trash" => "No Tours/Hotels found in Trash"),
+					'rewrite' => array("slug" => "tours"),
+					'supports' => array('page-attributes', 'title', 'editor', 'excerpt', 'thumbnail', 'custom-fields'),
+					'menu_position' => 20,
+					'show_in_nav_menus' => true,
+					'public' => true
+				)
+			);
+		} else {
+			register_post_type( 'tour',
+				array(
+					'label' => 'Tours/Hotels',
+					'singular_label' => 'Tour/Hotel',
+					'labels' => array("add_new_item" => "New Tour/Hotel", "edit_item" => "Edit Tour/Hotel", "view_item" => "View Tour/Hotel", "search_items" => "Search Tours/Hotels", "not_found" => "No Tours/Hotels found", "not_found_in_trash" => "No Tours/Hotels found in Trash"),
+					'rewrite' => array("slug" => "tours"),
+					'supports' => array('page-attributes', 'title', 'editor', 'excerpt', 'thumbnail'),
+					'menu_position' => 20,
+					'show_in_nav_menus' => true,
+					'public' => true
+				)
+			);
+		}
 		
 		register_taxonomy('product-type', array('tour'), array(
 		  'label' => _x( 'Product types', 'taxonomy general name' ),
@@ -101,6 +118,7 @@
 		register_setting('tourcms_wp_settings', 'tourcms_wp_bookwidth', 'intval'); 
 		register_setting('tourcms_wp_settings', 'tourcms_wp_booktext'); 
 		register_setting('tourcms_wp_settings', 'tourcms_wp_update_frequency');
+		register_setting('tourcms_wp_settings', 'tourcms_wp_allow_non_tourcms','intval');
 		
 		// Add custom meta box
 		if ( function_exists( 'add_meta_box' ) ) {
@@ -116,7 +134,8 @@
 				$marketplace_account_id = get_option('tourcms_wp_marketplace');
 				$channel_id = get_option('tourcms_wp_channel');
 				$api_private_key = get_option('tourcms_wp_apikey');
-	
+				$allow_non_tourcms = get_option('tourcms_wp_allow_non_tourcms');
+				
 				wp_nonce_field( 'tourcms_wp', 'tourcms_wp_wpnonce', false, true );
 				
 				if($marketplace_account_id===false || $channel_id===false || $api_private_key===false) 
@@ -147,6 +166,10 @@
 									<select name="tourcms_wp_tourid">
 										<!--option value="0">Do not associate with a TourCMS Tour/Hotel</option-->
 										<?php
+											if($allow_non_tourcms == 1) {
+												print '<option value="0">Do not associate with a TourCMS Tour/Hotel</option>';
+											} 
+										
 											foreach($results->tour as $tour) {
 												print '<option value="'.$tour->tour_id.'"';
 												if($tour->tour_id==$curval)
@@ -617,6 +640,25 @@
 						</tr>
 					</table>
 					
+					<!--h3>** Experimental ** - Allow Tours/Hotels that are not linked to a Tour/Hotel in TourCMS</h3>
+					<p>When this setting is enabled you will be able to create new Tours/Hotels in WordPress that are not associated with a Tour/Hotel in TourCMS. In addition this will expose the standard WordPress interface for editing the custom information that is cached from TourCMS - allowing this data to be populated for Tours/Hotels that are not stored in TourCMS.</p>
+					<p style="font-weight: bold;">This is an expirmental feature, the interface is not particularly polished and this is recommended for advanced users only. </p>
+					<table class="form-table">
+						<tr valign="top">
+							<th scope="row">
+								Enable (not recommended)
+							</th>
+							<td>
+								<?php
+									(get_option('tourcms_wp_allow_non_tourcms')=="") ? $tourcms_wp_allow_non_tourcms = 0 : $tourcms_wp_allow_non_tourcms = intval(get_option('tourcms_wp_allow_non_tourcms'));
+								?>
+								<input type="checkbox" name="tourcms_wp_allow_non_tourcms" value="1" <?php 
+									$tourcms_wp_allow_non_tourcms==1 ? print ' checked="checked"' : null;
+								?> />
+							</td>
+						</tr>
+					</table-->
+					
 					<p class="submit">
 						<input class="button-primary" type="submit" value="Save Changes" name="Submit" />
 					</p>
@@ -769,7 +811,14 @@
 		        $ret .= "$hours hours ";
 		    }
 	
-		    $minutes = bcmod((intval($seconds) / 60),60);
+		    $minutes = (intval($seconds) / 60)%60;
+		    
+		    if (function_exists('bcmod')) {
+		        $minutes = bcmod((intval($seconds) / 60),60);
+		    } else {
+		        $minutes = (intval($seconds) / 60)%60;
+		    }
+		    
 		    if($hours > 0 || $minutes > 0)
 		    {
 		        $ret .= "$minutes minutes ";
