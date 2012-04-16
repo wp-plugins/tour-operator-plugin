@@ -1,14 +1,14 @@
 === Tour & Activity Operator Ecommerce Plugin ===
 Contributors: TourCMS
 Tags:
-Version: 0.93
+Version: 0.96
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
-Tested up to: 3.1.3
-Stable tag: 0.93
+Tested up to: 3.3.1
+Stable tag: 0.96
 
 
-Adds extra functonality to WordPress to aid creating travel websites.
+Integrate WordPress with TourCMS to aid creating specialist Tour, Activity and Accommodation Operator websites.
 
 == Description ==
 
@@ -41,6 +41,14 @@ Full installation instructions are available on our website:
 5. Product types / Locations appear in the Menu editor
 
 == Changelog ==
+
+= 0.96 =
+* Added "Experience" data pulled from TourCMS and [exp] shortcode
+* Added support for custom fields and [tourcms_custom tag=""] shortcode
+* Added support for the standard WordPress "Author" box
+
+= 0.94 =
+* Fixed errors when the bcmath module is not installed in PHP
 
 = 0.93 =
 * Fixed issue when PHP short tags aren't enabled
