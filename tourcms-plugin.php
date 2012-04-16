@@ -2,8 +2,8 @@
 	/*
 	Plugin Name: TourCMS
 	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
-	Description: Integrate WordPress with TourCMS to aid creating specialist Tour Operator websites.
-	Version: 0.95
+	Description: Integrate WordPress with TourCMS to aid creating specialist Tour, Activity and Accommodation Operator websites.
+	Version: 0.96
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
@@ -54,7 +54,7 @@
 					'singular_label' => 'Tour/Hotel',
 					'labels' => array("add_new_item" => "New Tour/Hotel", "edit_item" => "Edit Tour/Hotel", "view_item" => "View Tour/Hotel", "search_items" => "Search Tours/Hotels", "not_found" => "No Tours/Hotels found", "not_found_in_trash" => "No Tours/Hotels found in Trash"),
 					'rewrite' => array("slug" => "tours"),
-					'supports' => array('page-attributes', 'title', 'editor', 'excerpt', 'thumbnail', 'custom-fields'),
+					'supports' => array('page-attributes', 'title', 'editor', 'author', 'excerpt', 'thumbnail', 'custom-fields'),
 					'menu_position' => 20,
 					'show_in_nav_menus' => true,
 					'public' => true
@@ -67,7 +67,7 @@
 					'singular_label' => 'Tour/Hotel',
 					'labels' => array("add_new_item" => "New Tour/Hotel", "edit_item" => "Edit Tour/Hotel", "view_item" => "View Tour/Hotel", "search_items" => "Search Tours/Hotels", "not_found" => "No Tours/Hotels found", "not_found_in_trash" => "No Tours/Hotels found in Trash"),
 					'rewrite' => array("slug" => "tours"),
-					'supports' => array('page-attributes', 'title', 'editor', 'excerpt', 'thumbnail'),
+					'supports' => array('page-attributes', 'title', 'editor', 'author', 'excerpt', 'thumbnail'),
 					'menu_position' => 20,
 					'show_in_nav_menus' => true,
 					'public' => true
@@ -334,6 +334,10 @@
 												<td class="row-title" title="[itinerary]">Itinerary</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_itinerary', true ))); ?></td>
 											</tr>
+											<tr>
+												<td class="row-title" title="[exp]">Experience</td>
+												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_exp', true ))); ?></td>
+											</tr>
 											<tr class="alternate">
 												<td class="row-title" title="[shortdesc]">Short Description</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_shortdesc', true ); ?></td>
@@ -470,6 +474,7 @@
 				update_post_meta( $post_id, 'tourcms_wp_has_sale_dec', (string)$tour->has_sale_dec);
 			
 				
+				
 				// Optional fields
 				if(isset($tour->tour_code))
 					update_post_meta( $post_id, 'tourcms_wp_tour_code', (string)$tour->tour_code);	
@@ -502,6 +507,12 @@
 					update_post_meta( $post_id, 'tourcms_wp_itinerary', '');
 					
 				
+				if(isset($tour->exp))
+					update_post_meta( $post_id, 'tourcms_wp_exp', (string)wpautop($tour->exp));
+				else
+					update_post_meta( $post_id, 'tourcms_wp_exp', '');
+					
+				
 				if(isset($tour->pick))
 					update_post_meta( $post_id, 'tourcms_wp_pick', (string)$tour->pick);
 				else
@@ -511,6 +522,29 @@
 					update_post_meta( $post_id, 'tourcms_wp_extras', (string)wpautop($tour->extras));
 				else
 					update_post_meta( $post_id, 'tourcms_wp_extras', '');
+				
+				// Custom fields
+				// Currently checks for both of the following
+				//	"custom_fields" in the root (current)
+				// "custom_fields" under "tour" node (proper, might be fixed in future API update
+				
+				if (isset($tour->custom_fields->field[0])) {
+					foreach ($tour->custom_fields->field as $custom_field) {
+					
+						$field_name = (string)$custom_field->name;
+						$field_value = (string)$custom_field->value;
+					
+						update_post_meta( $post_id, 'tourcms_wp_custom_' .$field_name , $field_value);
+					}
+				} elseif (isset($results->custom_fields->field[0])) {
+					foreach ($results->custom_fields->field as $custom_field) {
+					
+						$field_name = (string)$custom_field->name;
+						$field_value = (string)$custom_field->value;
+					
+						update_post_meta( $post_id, 'tourcms_wp_custom_' .$field_name , $field_value);
+					}
+				} 
 				
 				// Update images
 				for($i=0;$i<6;$i++) {
@@ -753,6 +787,25 @@
 			
 		return $text;
 	}
+	
+	// Custom fields TourCMS shortcode handler
+	// TODO: Merge with generic
+	// tourcms_wp_custom_
+	function tourcms_wp_custom_shortcode( $atts, $content = null ) {
+	   global $post;
+	   extract( shortcode_atts( array(
+	      'tag' => ''
+	      ), $atts ) );
+	      
+	      $text = "";
+	      
+	      
+		if($tag<>"")
+			return get_post_meta( $post->ID, 'tourcms_wp_custom_'.$tag, true );
+
+		return $text;
+	}
+	
 	add_shortcode('tour_code', 'tourcms_wp_shortcode');
 	add_shortcode('has_sale', 'tourcms_wp_shortcode');
 	add_shortcode('book_url', 'tourcms_wp_shortcode');
@@ -772,8 +825,11 @@
 	add_shortcode('shortdesc', 'tourcms_wp_shortcode');
 	add_shortcode('longdesc', 'tourcms_wp_shortcode');
 	add_shortcode('itinerary', 'tourcms_wp_shortcode');
+	add_shortcode('exp', 'tourcms_wp_shortcode');
 	add_shortcode('pick', 'tourcms_wp_shortcode');
 	add_shortcode('extras', 'tourcms_wp_shortcode');
+	
+	add_shortcode('tourcms_custom', 'tourcms_wp_custom_shortcode');
 	
 	// Generate a hyperlink to the booking engine
 	function tourcms_wp_booklink($atts, $content, $code) {
