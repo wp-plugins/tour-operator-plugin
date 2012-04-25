@@ -1,14 +1,14 @@
 === Tour & Activity Operator Ecommerce Plugin ===
 Contributors: TourCMS
 Tags:
-Version: 0.93
+Version: 0.97
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
-Tested up to: 3.1.3
-Stable tag: 0.93
+Tested up to: 3.3.2
+Stable tag: 0.97
 
 
-Adds extra functonality to WordPress to aid creating travel websites.
+Integrate WordPress with TourCMS to aid creating specialist Tour, Activity and Accommodation Operator websites.
 
 == Description ==
 
@@ -20,7 +20,7 @@ Includes widgets for displaying products on Google Maps or showing an availabili
 
 Store complex pricing, availability, bookings and customer data secure in [TourCMS](http://www.tourcms.com "TourCMS"). Use WordPress to design and build your website, seamlessly integrating with TourCMS for the booking/enquiry process.
 
-The TourCMS booking engine is configurable in 14+ languages (let us know if you need one we don't currently support) and integrates with various payment gateway solutions from around the world.
+The TourCMS booking engine is configurable in 20+ languages (let us know if you need one we don't currently support) and integrates with various payment gateway solutions from around the world.
 
 **This plugin requires a paid [TourCMS](http://www.tourcms.com "TourCMS") account, free trial accounts are available**
 
@@ -41,6 +41,18 @@ Full installation instructions are available on our website:
 5. Product types / Locations appear in the Menu editor
 
 == Changelog ==
+
+= 0.97 =
+* Tour Availability widget now links through to the month the user clicked on
+* New plugin setting to allow extra query string parameters to be added to booking links
+
+= 0.96 =
+* Added "Experience" data pulled from TourCMS and [exp] shortcode
+* Added support for custom fields and [tourcms_custom tag=""] shortcode
+* Added support for the standard WordPress "Author" box
+
+= 0.94 =
+* Fixed errors when the bcmath module is not installed in PHP
 
 = 0.93 =
 * Fixed issue when PHP short tags aren't enabled
