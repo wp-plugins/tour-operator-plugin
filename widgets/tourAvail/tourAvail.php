@@ -35,14 +35,16 @@ class tourAvail extends WP_Widget {
 					$height = (get_option('tourcms_wp_bookheight')=="") ? "600" : get_option('tourcms_wp_bookheight');
 					$width = (get_option('tourcms_wp_bookwidth')=="") ? "600" : get_option('tourcms_wp_bookwidth');			
 					$link = get_post_meta($post->ID, 'tourcms_wp_book_url', true );
+					$book_params = get_option('tourcms_wp_bookqs')=="" ? "" : get_option('tourcms_wp_bookqs');
+					$link .= $book_params;
 					
 					if($style=="popup") {
 						// Popup window
 						$if_width = (int)$width - 20;
 						$link .= "&if=1&ifwidth=$if_width";
-						$text = '<a href="'.$link.'" onclick="window.open(this, \'_blank\', \'height='.$height.',width='.$width.',statusbar=0,scrollbars=1\'); return false;">[MONTH]</a>';
+						$text = '<a href="'.$link.'&month_year=[MONTHYEAR]" onclick="window.open(this, \'_blank\', \'height='.$height.',width='.$width.',statusbar=0,scrollbars=1\'); return false;">[MONTH]</a>';
 					} else {
-						$text = '<a href="'.$link.'">[MONTH]</a>';
+						$text = '<a href="'.$link.'&month_year=[MONTHYEAR]">[MONTH]</a>';
 					}
 				} else {
 					$text = "[MONTH]";
@@ -72,10 +74,16 @@ class tourAvail extends WP_Widget {
 								print '<span class="month off">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ';
 							else {
 								$onsale = (int)get_post_meta($post->ID, 'tourcms_wp_has_sale_'.$months[$i], true );
-								if($onsale)
-									print str_replace("[MONTH]", '<span class="month on">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ', $text);
-								else
-									print '<span class="month off">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ';		
+								if($onsale) {
+									$out_month = str_pad($i + 1, 2, "0", STR_PAD_LEFT);
+									$out_text = str_replace("[MONTHYEAR]", $out_month . "_" . $year, $text);
+									print str_replace("[MONTH]", '<span class="month on">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ', $out_text);
+								} else {
+									//print '<span class="month off">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ';		
+									$out_month = str_pad($i + 1, 2, "0", STR_PAD_LEFT);
+									$out_text = str_replace("[MONTHYEAR]", $out_month . "_" . $year, $text);
+									print str_replace("[MONTH]", '<span class="month off">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ', $out_text);
+								}
 							}
 						}
 					?>
@@ -86,12 +94,22 @@ class tourAvail extends WP_Widget {
 						for($i=0; $i<=11; $i++) {
 							if($i<$month-1) {
 								$onsale = (int)get_post_meta($post->ID, 'tourcms_wp_has_sale_'.$months[$i], true );
-								if($onsale)
-									print str_replace("[MONTH]", '<span class="month on">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ', $text);
-								else
-									print '<span class="month off">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ';
-							} else
-								print '<span class="month off">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ';
+								if($onsale) {
+									$out_month = str_pad($i + 1, 2, "0", STR_PAD_LEFT);
+									$out_text = str_replace("[MONTHYEAR]", $out_month . "_" . ($year + 1), $text);
+									print str_replace("[MONTH]", '<span class="month on">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ', $out_text);
+								} else {
+									//print '<span class="month off">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ';
+									$out_month = str_pad($i + 1, 2, "0", STR_PAD_LEFT);
+									$out_text = str_replace("[MONTHYEAR]", $out_month . "_" . ($year + 1), $text);
+									print str_replace("[MONTH]", '<span class="month off">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ', $out_text);
+								}
+							} else {
+								//print '<span class="month off">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ';
+								$out_month = str_pad($i + 1, 2, "0", STR_PAD_LEFT);
+								$out_text = str_replace("[MONTHYEAR]", $out_month . "_" . ($year + 1), $text);
+								print str_replace("[MONTH]", '<span class="month off">'.__( strtoupper($months[$i]), 'tourcms_wp' ).'</span> ', $out_text);
+							}
 						}
 					?>
 				</div><br style="clear: left;"></div>

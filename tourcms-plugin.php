@@ -3,7 +3,7 @@
 	Plugin Name: TourCMS
 	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 	Description: Integrate WordPress with TourCMS to aid creating specialist Tour, Activity and Accommodation Operator websites.
-	Version: 0.96
+	Version: 0.97
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
@@ -116,6 +116,7 @@
 		register_setting('tourcms_wp_settings', 'tourcms_wp_bookstyle'); 
 		register_setting('tourcms_wp_settings', 'tourcms_wp_bookheight', 'intval'); 
 		register_setting('tourcms_wp_settings', 'tourcms_wp_bookwidth', 'intval'); 
+		register_setting('tourcms_wp_settings', 'tourcms_wp_bookqs'); 
 		register_setting('tourcms_wp_settings', 'tourcms_wp_booktext'); 
 		register_setting('tourcms_wp_settings', 'tourcms_wp_update_frequency');
 		register_setting('tourcms_wp_settings', 'tourcms_wp_allow_non_tourcms','intval');
@@ -629,7 +630,7 @@
 								<label for="tourcms_wp_booktext">Text</label>
 							</th>
 							<td>
-								<input type="text" name="tourcms_wp_booktext" value="<?php echo (get_option('tourcms_wp_booktext')=="") ? __( 'Book Online', 'tourcms_wp' ) : get_option('tourcms_wp_booktext'); ?>" />
+								<input type="text" name="tourcms_wp_booktext" value="<?php echo (get_option('tourcms_wp_booktext')=="") ? __( 'Book Online', 'tourcms_wp' ) : get_option('tourcms_wp_booktext'); ?>" placeholder='e.g. "Book Online"' />
 							</td>
 						</tr>
 						<tr valign="top">
@@ -638,7 +639,7 @@
 								<span class="description">(Iframe &amp; Popup Window)</span>
 							</th>
 							<td>
-								<input type="text" size="4" name="tourcms_wp_bookheight" value="<?php echo (get_option('tourcms_wp_bookheight')=="") ? "700" : get_option('tourcms_wp_bookheight'); ?>" /> <span class="description">px</span>
+								<input type="text" size="4" name="tourcms_wp_bookheight" value="<?php echo (get_option('tourcms_wp_bookheight')=="") ? "700" : get_option('tourcms_wp_bookheight'); ?>" placeholder='e.g. "700"' /> <span class="description">px</span>
 							</td>
 						</tr>
 						<tr valign="top">
@@ -650,6 +651,15 @@
 								<input type="text" size="4" name="tourcms_wp_bookwidth" value="<?php echo (get_option('tourcms_wp_bookwidth')=="") ? "700" : get_option('tourcms_wp_bookwidth'); ?>" /> <span class="description">px</span>
 							</td>
 						</tr>
+						<tr valign="top">
+							<th scope="row">
+								Extra Query String Parameters<br />
+								<span class="description"><a href="http://www.tourcms.com/support/setup/booking_engine/integration_parameters.php" target="_blank">What's this?</a></span>
+							</th>
+							<td>
+								<input type="text" size="30" name="tourcms_wp_bookqs" value="<?php echo (get_option('tourcms_wp_bookqs')=="") ? "" : get_option('tourcms_wp_bookqs'); ?>" placeholder='e.g. "&people=0&month_year=12_2012"' /> <span class="description">Probably leave this blank</span>
+							</td>
+						</tr>					
 					</table>
 					
 					<h3>Cache Settings</h3>
@@ -728,6 +738,8 @@
 			$book_text = get_option('tourcms_wp_booktext')=="" ? __( 'Book Online', 'tourcms_wp' ) : get_option('tourcms_wp_booktext');
 			$book_height = get_option('tourcms_wp_bookheight')=="" ? "600" : get_option('tourcms_wp_bookheight');
 			$book_width = get_option('tourcms_wp_bookwidth')=="" ? "600" : get_option('tourcms_wp_bookwidth');
+			$book_params = get_option('tourcms_wp_bookqs')=="" ? "" : get_option('tourcms_wp_bookqs');
+			$book_url .= $book_params;
 		
 			// Render the booking engine based on the book_style
 			if($book_style=="link") {
