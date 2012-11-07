@@ -1,30 +1,32 @@
 === Tour & Activity Operator Ecommerce Plugin ===
 Contributors: TourCMS
 Tags:
-Version: 0.97
+Version: 0.100
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
 Tested up to: 3.3.2
-Stable tag: 0.97
+Stable tag: 0.100
 
 
 Integrate WordPress with TourCMS to aid creating specialist Tour, Activity and Accommodation Operator websites.
 
 == Description ==
 
-Build websites selling travel products online.
+Integrate WordPress with [TourCMS](http://www.tourcms.com "TourCMS") to aid creating Tour & Activity Operator websites.
 
-This plugin extends WordPress with new Post types for Tours/Hotels (and other travel products) and integrates with the TourCMS booking engine. Upload your prices once, ensure you are always displaying live pricing and booking against live availability. 
+This plugin extends WordPress with new Post types for Tours/Hotels (and other travel products) and integrates with the TourCMS booking engine. Upload your prices once (into TourCMS) and ensure you are always displaying live pricing and booking against live availability. 
 
-Includes widgets for displaying products on Google Maps or showing an availability overview and a specially designed theme is available free of charge from our website (or use your existing theme).
+Includes widgets for displaying products on Google Maps or showing a monthly availability overview and a basic example theme can be downloaded from our website (or customise your existing theme).
 
-Store complex pricing, availability, bookings and customer data secure in [TourCMS](http://www.tourcms.com "TourCMS"). Use WordPress to design and build your website, seamlessly integrating with TourCMS for the booking/enquiry process.
+Store complex pricing, availability, bookings and customer data secure in TourCMS. Use WordPress templates to design and build your website, integrating with TourCMS for the booking/enquiry process.
 
 The TourCMS booking engine is configurable in 20+ languages (let us know if you need one we don't currently support) and integrates with various payment gateway solutions from around the world.
 
 **This plugin requires a paid [TourCMS](http://www.tourcms.com "TourCMS") account, free trial accounts are available**
 
 If you have any feedback or queries we'd love to hear from you so please drop by the [TourCMS forums](http://community.tourcms.com "TourCMS forums") or [Send us a message](http://www.tourcms.com/company/contact.php "Send us a message").
+
+Please do feel free to contact us prior to starting your project, we have other website integration options, matching all developer skill-sets.
 
 == Installation ==
 
@@ -41,6 +43,11 @@ Full installation instructions are available on our website:
 5. Product types / Locations appear in the Menu editor
 
 == Changelog ==
+
+= 0.99 =
+* Added "Tour ID" field and [tour_id] short code
+* Added new "Includes", "Excludes" and "Redeem" fields
+* Added support for extra images (now up to 10)
 
 = 0.97 =
 * Tour Availability widget now links through to the month the user clicked on
