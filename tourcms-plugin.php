@@ -38,9 +38,6 @@
 	  return $links; 
 	}
 	
-	
-	
-	
 	function tourcms_init() {
 		$allow_non_tourcms = get_option('tourcms_wp_allow_non_tourcms');
 		
@@ -225,7 +222,7 @@
 												<td class="row-title" title="[tour_id]">Tour ID</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_tour_id', true ); ?></td>
 											</tr>
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[tour_code]">Tour code</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_tour_code', true ); ?></td>
 											</tr>
@@ -330,15 +327,15 @@
 												<td class="row-title" title="[inc]">Includes</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_inc', true ))); ?></td>
 											</tr>
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[ex]">Excludes</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_ex', true ))); ?></td>
 											</tr>
-											<tr class="alternate">
+											<tr>
 												<td class="row-title" title="[extras]">Extras / upgrades</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_extras', true ))); ?></td>
 											</tr>
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[itinerary]">Itinerary</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_itinerary', true ))); ?></td>
 											</tr>
@@ -346,16 +343,16 @@
 												<td class="row-title" title="[exp]">Experience</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_exp', true ))); ?></td>
 											</tr>
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[redeem]">Redemption Instructions</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_redeem', true ))); ?></td>
 											</tr>
-											<tr class="alternate">
+											<tr>
 												<td class="row-title" title="[shortdesc]">Short Description</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_shortdesc', true ); ?></td>
 											</tr>
 											
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[longdesc]">Long Description</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_longdesc', true ))); ?></td>
 											</tr>
@@ -576,10 +573,16 @@
 				} 
 				
 				// Update images
-				for($i=0;$i<6;$i++) {
+				for($i=0;$i<=10;$i++) {
 					if(isset($tour->images->image[$i]->url)) {
 						update_post_meta( $post_id, 'tourcms_wp_image_url_'.$i, (string)$tour->images->image[$i]->url);
 						update_post_meta( $post_id, 'tourcms_wp_image_desc_'.$i, (string)$tour->images->image[$i]->image_desc);
+						
+						if(isset($tour->images->image[$i]->url_thumbnail)) {
+							update_post_meta( $post_id, 'tourcms_wp_image_url_thumbnail_'.$i, (string)$tour->images->image[$i]->url_thumbnail);
+						} else {
+							delete_post_meta( $post_id, 'tourcms_wp_image_url_thumbnail_'.$i);
+						}
 						
 						/*
 						$attachment = array
@@ -597,6 +600,7 @@
 					} else {
 						delete_post_meta( $post_id, 'tourcms_wp_image_url_'.$i);
 						delete_post_meta( $post_id, 'tourcms_wp_image_desc_'.$i);
+						delete_post_meta( $post_id, 'tourcms_wp_image_url_thumbnail_'.$i);
 					}
 				}
 			}
