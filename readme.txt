@@ -8,7 +8,7 @@ Tested up to: 3.3.2
 Stable tag: 0.100
 
 
-Integrate WordPress with TourCMS to aid creating specialist Tour, Activity and Accommodation Operator websites.
+Integrate WordPress with TourCMS to aid creating specialist Tour and Activity Operator websites.
 
 == Description ==
 
@@ -43,6 +43,10 @@ Full installation instructions are available on our website:
 5. Product types / Locations appear in the Menu editor
 
 == Changelog ==
+
+= 0.100 =
+* Added thumbnail image URLs
+* Fixed issue where sometimes only 6 images would be returned
 
 = 0.99 =
 * Added "Tour ID" field and [tour_id] short code
