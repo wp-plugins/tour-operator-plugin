@@ -307,7 +307,7 @@
 												?></td>
 											</tr>
 											
-											<tr class="alternate">
+											<tr>
 												<td class="row-title" title="[vid_embed]">Video</td>
 												<td class="desc">
 													<?php
@@ -321,7 +321,7 @@
 												</td>
 											</tr>
 											
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[document_link]">Document</td>
 												<td class="desc"><?php
 													$vid_url = get_post_meta( $post->ID, 'tourcms_wp_document_url_0', true ); 
