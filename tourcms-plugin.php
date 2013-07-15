@@ -119,6 +119,7 @@
 		register_setting('tourcms_wp_settings', 'tourcms_wp_allow_non_tourcms','intval');
 		register_setting('tourcms_wp_settings', 'tourcms_wp_vidheight', 'intval'); 
 		register_setting('tourcms_wp_settings', 'tourcms_wp_vidwidth', 'intval'); 
+		register_setting('tourcms_wp_settings', 'tourcms_wp_vidresponsive'); 
 		
 		// Add custom meta box
 		if ( function_exists( 'add_meta_box' ) ) {
@@ -764,6 +765,19 @@
 							<input type="text" size="4" name="tourcms_wp_vidwidth" value="<?php echo (get_option('tourcms_wp_vidwidth')=="") ? "608" : get_option('tourcms_wp_vidwidth'); ?>" placeholder='e.g. "608"'  /> <span class="description">px</span>
 						</td>
 					</tr>
+					<?php
+						(get_option('tourcms_wp_vidresponsive')=="") ? $tourcms_wp_vidresponsive = "yes" : $tourcms_wp_vidresponsive = get_option('tourcms_wp_vidresponsive');
+					?>
+					<tr valign="top">
+						<th scope="row">
+							Responsive<br />
+							<span class="description">If your theme resizes for mobile devices, leaving this on will allow videos to resize with your theme.</span>
+						</th>
+						<td>
+							<label title="off"><input type="radio" name="tourcms_wp_vidresponsive" value="yes" <?php echo ($tourcms_wp_vidresponsive=="yes" ? 'checked="checked"' : null); ?>/> On</label><br />
+							<label title="link"><input type="radio" name="tourcms_wp_vidresponsive" value="no" <?php echo ($tourcms_wp_vidresponsive=="no" ? 'checked="checked"' : null); ?>/> Off</label>
+						</td>
+					</tr>
 					</table>
 					
 					
@@ -1025,7 +1039,8 @@
 			global $post;
 			extract( shortcode_atts( array(
 			      'height' => (get_option('tourcms_wp_vidheight')=="") ? "342" : get_option('tourcms_wp_vidheight'),
-			      'width' => (get_option('tourcms_wp_vidwidth')=="") ? "608" : get_option('tourcms_wp_vidwidth')
+			      'width' => (get_option('tourcms_wp_vidwidth')=="") ? "608" : get_option('tourcms_wp_vidwidth'),
+			      'responsive' => (get_option('tourcms_wp_vidresponsive')=="") ? "yes" : get_option('tourcms_wp_vidresponsive')
 			      ), $atts ) );    
 			
 			$video_id = get_post_meta( $post->ID, 'tourcms_wp_video_id_0', true );		
@@ -1038,8 +1053,20 @@
 			            "width" => $width,
 			            "height" => $height
 			        ];
-	
-			return $video->get_embed($video_id, $video_service, $video_options);
+			
+			$return = $video->get_embed($video_id, $video_service, $video_options);
+		
+			if($responsive == "yes" && !empty($return)) {
+				$return = "<div class='tcms-video-container'>
+	$return
+</div>
+<style type='text/css'>
+	.tcms-video-container {     position: relative;     padding-bottom: 56.25%;     padding-top: 30px; height: 0; overflow: hidden; }
+	.tcms-video-container iframe {     position: absolute;     top: 0;     left: 0;     width: 100%;     height: 100%; }
+</style>";
+			}
+		
+			return $return;
 		}
 	add_shortcode('vid_embed', 'tourcms_wp_video_embed');
 	add_shortcode('tourcms_vid_embed', 'tourcms_wp_video_embed');
