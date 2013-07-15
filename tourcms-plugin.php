@@ -322,6 +322,18 @@
 											</tr>
 											
 											<tr>
+												<td class="row-title" title="[document_link]">Document</td>
+												<td class="desc"><?php
+													$vid_url = get_post_meta( $post->ID, 'tourcms_wp_document_url_0', true ); 
+													if(!empty($vid_url)) {
+														?>
+														<a href="<?php echo get_post_meta( $post->ID, 'tourcms_wp_document_url_0', true ); ?>" target="_blank"><?php echo get_post_meta( $post->ID, 'tourcms_wp_document_desc_0', true ); ?></a>
+														<?php
+													}
+												?></td>
+											</tr>
+											
+											<tr>
 												<td class="row-title" title="[summary]">Summary</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_summary', true ); ?></td>
 											</tr>
@@ -600,6 +612,17 @@
 					update_post_meta( $post_id, 'tourcms_wp_video_service_0' , '');
 					update_post_meta( $post_id, 'tourcms_wp_video_url_0' , '');
 				}
+				
+				// Document
+				if(!empty($tour->documents->document[0]->document_url)) {
+					$doc = $tour->documents->document[0];
+					update_post_meta( $post_id, 'tourcms_wp_document_desc_0' , (string)$doc->document_description);
+					update_post_meta( $post_id, 'tourcms_wp_document_url_0' , (string)$doc->document_url);
+				} else {
+					update_post_meta( $post_id, 'tourcms_wp_document_desc_0' , '');
+					update_post_meta( $post_id, 'tourcms_wp_document_url_0' , '');
+				}
+				
 				
 				// Update images
 				for($i=0;$i<=10;$i++) {
@@ -1020,6 +1043,27 @@
 		}
 	add_shortcode('vid_embed', 'tourcms_wp_video_embed');
 	add_shortcode('tourcms_vid_embed', 'tourcms_wp_video_embed');
+	
+	// Link code for documents
+		function tourcms_wp_doc_link($atts, $content, $code) {
+		
+			global $post;
+			extract( shortcode_atts( array(
+			      'target' => '_blank'
+			      ), $atts ) );    
+			
+			$document_url = get_post_meta( $post->ID, 'tourcms_wp_document_url_0', true );		
+			$document_desc = get_post_meta( $post->ID, 'tourcms_wp_document_desc_0', true );		
+			
+			$text = $document_desc;
+			
+			if(!empty($content))
+				$text = $content;
+		
+			return "<a href='$document_url' target='$target'>$text</a>";
+		}
+	add_shortcode('doc_link', 'tourcms_wp_doc_link');
+	add_shortcode('tourcms_doc_link', 'tourcms_wp_doc_link');
 	
 	function tourcms_wp_convtime($seconds)
 		{
