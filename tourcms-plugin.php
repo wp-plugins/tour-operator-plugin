@@ -117,6 +117,8 @@
 		register_setting('tourcms_wp_settings', 'tourcms_wp_booktext'); 
 		register_setting('tourcms_wp_settings', 'tourcms_wp_update_frequency');
 		register_setting('tourcms_wp_settings', 'tourcms_wp_allow_non_tourcms','intval');
+		register_setting('tourcms_wp_settings', 'tourcms_wp_vidheight', 'intval'); 
+		register_setting('tourcms_wp_settings', 'tourcms_wp_vidwidth', 'intval'); 
 		
 		// Add custom meta box
 		if ( function_exists( 'add_meta_box' ) ) {
@@ -305,6 +307,20 @@
 												?></td>
 											</tr>
 											
+											<tr class="alternate">
+												<td class="row-title" title="[vid_embed]">Video</td>
+												<td class="desc">
+													<?php
+														$vid_url = get_post_meta( $post->ID, 'tourcms_wp_video_url_0', true ); 
+														if(!empty($vid_url)) {
+															?>
+															<a href="<?php echo get_post_meta( $post->ID, 'tourcms_wp_video_url_0', true ); ?>" target="_blank"><?php echo get_post_meta( $post->ID, 'tourcms_wp_video_url_0', true ); ?></a>
+															<?php
+														}
+													?>
+												</td>
+											</tr>
+											
 											<tr>
 												<td class="row-title" title="[summary]">Summary</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_summary', true ); ?></td>
@@ -413,7 +429,7 @@
 	// Updates TourCMS information on a particular Tour/Hotel, called either when
 	// editing in WordPress or when being viewed with a stale cache
 	function tourcms_wp_refresh_info($post_id, $tour_id) {
-	
+			
 			update_post_meta( $post_id, 'tourcms_wp_tourid', $tour_id);
 			
 			// Load TourCMS plugin settings
@@ -431,6 +447,7 @@
 				require_once 'tourcms.php';
 				$tourcms = new TourCMS($marketplace_account_id, $api_private_key, 'simplexml');
 				$results = $tourcms->show_tour($tour_id, $channel_id);
+				
 				
 				// If there's any sort of error, return
 				if($results->error != "OK")
@@ -572,6 +589,18 @@
 					}
 				} 
 				
+				// Video
+				if(!empty($tour->videos->video[0]->video_id)) {
+					$vid = $tour->videos->video[0];
+					update_post_meta( $post_id, 'tourcms_wp_video_id_0' , (string)$vid->video_id);
+					update_post_meta( $post_id, 'tourcms_wp_video_service_0' , (string)$vid->video_service);
+					update_post_meta( $post_id, 'tourcms_wp_video_url_0' , (string)$vid->video_url);
+				} else {
+					update_post_meta( $post_id, 'tourcms_wp_video_id_0' , '');
+					update_post_meta( $post_id, 'tourcms_wp_video_service_0' , '');
+					update_post_meta( $post_id, 'tourcms_wp_video_url_0' , '');
+				}
+				
 				// Update images
 				for($i=0;$i<=10;$i++) {
 					if(isset($tour->images->image[$i]->url)) {
@@ -693,6 +722,27 @@
 							</td>
 						</tr>					
 					</table>
+					
+					<h3>Video Embedding defaults</h3>
+					<table class="form-table">
+					<tr valign="top">
+						<th scope="row">
+							Height
+						</th>
+						<td>
+							<input type="text" size="4" name="tourcms_wp_vidheight" value="<?php echo (get_option('tourcms_wp_vidheight')=="") ? "342" : get_option('tourcms_wp_vidheight'); ?>" placeholder='e.g. "342"' /> <span class="description">px</span>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
+							Width
+						</th>
+						<td>
+							<input type="text" size="4" name="tourcms_wp_vidwidth" value="<?php echo (get_option('tourcms_wp_vidwidth')=="") ? "608" : get_option('tourcms_wp_vidwidth'); ?>" placeholder='e.g. "608"'  /> <span class="description">px</span>
+						</td>
+					</tr>
+					</table>
+					
 					
 					<h3>Cache Settings</h3>
 					<p>When you save a Tour/Hotel inside WordPress the plugin will get the latest information on that product from TourCMS. It's also possible to update that information automatically if a Tour/Hotel is viewed on your site and hasn't been updated in a while.</p>
@@ -824,6 +874,16 @@
 	// Generic TourCMS Shortcode handler
 	function tourcms_wp_shortcode($atts, $content, $code) {
 		global $post;
+		
+		//error_log($tag);
+		// Support tourcms_ prefixed shortcodes
+		// added due to conflicts with other plugins/themes
+		if(substr($code, 0, 8) == 'tourcms_') {
+			$code = str_replace('tourcms_', '', $code);
+		}
+		
+		//error_log($tag);
+		
 		$text = get_post_meta( $post->ID, 'tourcms_wp_'.$code, true );
 		
 		if($code=="from_price")
@@ -842,7 +902,6 @@
 	      ), $atts ) );
 	      
 	      $text = "";
-	      
 	      
 		if($tag<>"")
 			return get_post_meta( $post->ID, 'tourcms_wp_custom_'.$tag, true );
@@ -877,7 +936,38 @@
 	add_shortcode('pick', 'tourcms_wp_shortcode');
 	add_shortcode('extras', 'tourcms_wp_shortcode');
 	
+	
 	add_shortcode('tourcms_custom', 'tourcms_wp_custom_shortcode');
+	
+	
+	// Support tourcms_ prefixed shortcodes
+	// added due to conflicts with other plugins/themes
+	add_shortcode('tourcms_tour_code', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_tour_id', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_has_sale', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_book_url', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_from_price', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_from_price_display', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_sale_currency', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_geocode_start', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_geocode_end', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_duration_desc', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_available', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_inc_ex', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_inc', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_ex', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_essential', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_rest', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_redeem', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_tour_name', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_location', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_summary', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_shortdesc', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_longdesc', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_itinerary', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_exp', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_pick', 'tourcms_wp_shortcode');
+	add_shortcode('tourcms_extras', 'tourcms_wp_shortcode');
 	
 	// Generate a hyperlink to the booking engine
 	function tourcms_wp_booklink($atts, $content, $code) {
@@ -904,6 +994,32 @@
 		return $text;
 	}
 	add_shortcode('book_link', 'tourcms_wp_booklink');
+	add_shortcode('tourcms_book_link', 'tourcms_wp_booklink');
+	
+	// Embed code for video
+		function tourcms_wp_video_embed($atts, $content, $code) {
+		
+			global $post;
+			extract( shortcode_atts( array(
+			      'height' => (get_option('tourcms_wp_vidheight')=="") ? "342" : get_option('tourcms_wp_vidheight'),
+			      'width' => (get_option('tourcms_wp_vidwidth')=="") ? "608" : get_option('tourcms_wp_vidwidth')
+			      ), $atts ) );    
+			
+			$video_id = get_post_meta( $post->ID, 'tourcms_wp_video_id_0', true );		
+			$video_service = get_post_meta( $post->ID, 'tourcms_wp_video_service_0', true );		
+			
+			include_once('video_embed/video_embed.php');
+			
+			$video = new VideoEmbed();
+			$video_options = [
+			            "width" => $width,
+			            "height" => $height
+			        ];
+	
+			return $video->get_embed($video_id, $video_service, $video_options);
+		}
+	add_shortcode('vid_embed', 'tourcms_wp_video_embed');
+	add_shortcode('tourcms_vid_embed', 'tourcms_wp_video_embed');
 	
 	function tourcms_wp_convtime($seconds)
 		{
