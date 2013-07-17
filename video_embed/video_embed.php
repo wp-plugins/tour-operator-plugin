@@ -2,6 +2,7 @@
 	class VideoEmbed {
 	
 		// Supported video services
+		// More added later
 		
 		protected $services = array("vimeo", "youtube");
 	
