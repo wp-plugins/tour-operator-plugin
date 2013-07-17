@@ -3,7 +3,7 @@
 	
 		// Supported video services
 		
-		protected $services = ["vimeo", "youtube"];
+		protected $services = array("vimeo", "youtube");
 	
 		// Video details
 		
@@ -20,7 +20,7 @@
 		
 		// Constructor
 		// Single array for options
-		public function __construct($options = []) {
+		public function __construct($options = array()) {
 		
 			// Settings
 			
@@ -34,7 +34,7 @@
 		// Pass video_id
 		// video_service (defaults to youtube)
 		// options (or leave blank for defaults / constructor options
-		public function get_embed($video_id, $video_service = "youtube", $options = []) {
+		public function get_embed($video_id, $video_service = "youtube", $options = array()) {
 			
 			// Video details
 			

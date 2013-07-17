@@ -3,7 +3,7 @@
 	Plugin Name: TourCMS
 	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 	Description: Integrate WordPress with TourCMS to aid creating specialist Tour, Activity and Accommodation Operator websites.
-	Version: 0.101
+	Version: 0.102
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
@@ -1049,10 +1049,10 @@
 			include_once('video_embed/video_embed.php');
 			
 			$video = new VideoEmbed();
-			$video_options = [
+			$video_options = array(
 			            "width" => $width,
 			            "height" => $height
-			        ];
+			        );
 			
 			$return = $video->get_embed($video_id, $video_service, $video_options);
 		
