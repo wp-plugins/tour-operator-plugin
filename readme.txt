@@ -5,7 +5,7 @@ Version: 0.107
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
 Tested up to: 3.7.1
-Stable tag: 0.106
+Stable tag: 0.107
 
 
 Integrate WordPress with TourCMS to aid creating specialist Tour and Activity Operator websites.
