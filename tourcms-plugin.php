@@ -3,7 +3,7 @@
 	Plugin Name: TourCMS
 	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 	Description: Integrate WordPress with TourCMS to aid creating specialist Tour, Activity and Accommodation Operator websites.
-	Version: 0.106
+	Version: 0.107
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
@@ -286,14 +286,39 @@
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_geocode_end', true ); ?> <a href="http://maps.google.com/?q=<?php echo get_post_meta( $post->ID, 'tourcms_wp_geocode_end', true ); ?>" target="_blank" title="View on Google Maps">&raquo;</a></td>
 											</tr>
 											<tr class="alternate">
+												<td class="row-title">All geocodes</td>
+												<td class="desc"><?php 
+												
+													$tourcms_wp_geocode_all = get_post_meta( $post->ID, 'tourcms_wp_geocode_all', true );
+													
+													
+													if($tourcms_wp_geocode_all != '') {
+													
+														$points = json_decode($tourcms_wp_geocode_all);
+														
+														
+														foreach($points as $key => $point) {
+															print "[" . $key . "] " 
+																. $point->label
+																. " <a href='http://maps.google.com/?q="
+																. $point->geocode
+																. "' target='_blank' title='View on Google Maps'>&raquo;</a>"
+																. "<br />";
+																
+														}
+												
+													}
+												?></td>
+											</tr>
+											<tr>
 												<td class="row-title" title="[duration_desc]">Duration description</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_duration_desc', true ); ?></td>
 											</tr>
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[available]">Available</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_available', true ); ?></td>
 											</tr>
-											<tr class="alternate">
+											<tr>
 												<td class="row-title">Images</td>
 												<td class="desc"><?php 
 													for($i=0; $i<=10; $i++) {
@@ -308,7 +333,7 @@
 												?></td>
 											</tr>
 											
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[vid_embed]">Video</td>
 												<td class="desc">
 													<?php
@@ -322,7 +347,7 @@
 												</td>
 											</tr>
 											
-											<tr class="alternate">
+											<tr>
 												<td class="row-title" title="[document_link]">Document</td>
 												<td class="desc"><?php
 													$vid_url = get_post_meta( $post->ID, 'tourcms_wp_document_url_0', true ); 
@@ -334,54 +359,54 @@
 												?></td>
 											</tr>
 											
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[summary]">Summary</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_summary', true ); ?></td>
 											</tr>
 											
-											<tr class="alternate">
+											<tr>
 												<td class="row-title" title="[essential]">Essential</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_essential', true ); ?></td>
 											</tr>
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[rest]">Restrictions</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_rest', true ); ?></td>
 											</tr>
 											
-											<tr class="alternate">
+											<tr>
 												<td class="row-title" title="[pick]">Pick up / Drop off</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_pick', true ))); ?></td>
 											</tr>
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[inc]">Includes</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_inc', true ))); ?></td>
 											</tr>
-											<tr class="alternate">
+											<tr>
 												<td class="row-title" title="[ex]">Excludes</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_ex', true ))); ?></td>
 											</tr>
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[extras]">Extras / upgrades</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_extras', true ))); ?></td>
 											</tr>
-											<tr class="alternate">
+											<tr>
 												<td class="row-title" title="[itinerary]">Itinerary</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_itinerary', true ))); ?></td>
 											</tr>
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[exp]">Experience</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_exp', true ))); ?></td>
 											</tr>
-											<tr class="alternate">
+											<tr>
 												<td class="row-title" title="[redeem]">Redemption Instructions</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_redeem', true ))); ?></td>
 											</tr>
-											<tr>
+											<tr class="alternate">
 												<td class="row-title" title="[shortdesc]">Short Description</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_shortdesc', true ); ?></td>
 											</tr>
 											
-											<tr class="alternate">
+											<tr>
 												<td class="row-title" title="[longdesc]">Long Description</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_longdesc', true ))); ?></td>
 											</tr>
@@ -477,6 +502,33 @@
 				update_post_meta( $post_id, 'tourcms_wp_sale_currency', (string)$tour->sale_currency);
 				update_post_meta( $post_id, 'tourcms_wp_geocode_start', (string)$tour->geocode_start);
 				update_post_meta( $post_id, 'tourcms_wp_geocode_end', (string)$tour->geocode_end);
+				
+				// All geocode points
+				$points[] = array(
+					'geocode' => (string)$tour->geocode_start,
+					'can_start_end_here' => 1,
+					'label' =>  __( 'Start', 'tourcms_wp' )
+				);
+				
+				if(!empty($tour->geocode_midpoints)) {
+					foreach($tour->geocode_midpoints->midpoint as $point) {
+						$points[] = array(
+							'geocode' => (string)$point->geocode,
+							'can_start_end_here' => (string)$point->can_start_end_here,
+							'label' => (string)$point->label
+						);
+					}
+				}
+					
+				$points[] = array(
+					'geocode' => (string)$tour->geocode_end,
+					'can_start_end_here' => 1,
+					'label' =>  __( 'End', 'tourcms_wp' )
+				);
+				
+				update_post_meta( $post_id, 'tourcms_wp_geocode_all', json_encode($points));	
+				// End all geocode points
+				
 				update_post_meta( $post_id, 'tourcms_wp_duration_desc', (string)$tour->duration_desc);
 				update_post_meta( $post_id, 'tourcms_wp_available', (string)$tour->available);	
 				update_post_meta( $post_id, 'tourcms_wp_has_sale', (string)$tour->has_sale);
