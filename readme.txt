@@ -1,10 +1,10 @@
-=== Tour & Activity Operator Ecommerce Plugin ===
+=== Tour & Activity Operator Plugin for TourCMS ===
 Contributors: TourCMS
 Tags:
-Version: 0.106
+Version: 0.107
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
-Tested up to: 3.3.2
+Tested up to: 3.7.1
 Stable tag: 0.106
 
 
@@ -14,7 +14,7 @@ Integrate WordPress with TourCMS to aid creating specialist Tour and Activity Op
 
 Integrate WordPress with [TourCMS](http://www.tourcms.com "TourCMS") to aid creating Tour & Activity Operator websites.
 
-This plugin extends WordPress with new Post types for Tours/Hotels (and other travel products) and integrates with the TourCMS booking engine. Upload your prices once (into TourCMS) and ensure you are always displaying live pricing and booking against live availability. 
+This plugin extends WordPress with new Post types for Tours (and other travel products) and integrates with the TourCMS booking engine. Upload your prices once (into TourCMS) and ensure you are always displaying live pricing and booking against live availability. 
 
 Includes widgets for displaying products on Google Maps or showing a monthly availability overview and a basic example theme can be downloaded from our website (or customise your existing theme).
 
@@ -43,6 +43,9 @@ Full installation instructions are available on our website:
 5. Product types / Locations appear in the Menu editor
 
 == Changelog ==
+
+= 0.107 =
+* Now includes all geocodes stored in TourCMS
 
 = 0.101 =
 * Added support for embedded videos
