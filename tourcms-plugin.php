@@ -3,7 +3,7 @@
 	Plugin Name: TourCMS
 	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 	Description: Integrate WordPress with TourCMS to aid creating specialist Tour, Activity and Accommodation Operator websites.
-	Version: 0.107
+	Version: 1.0.8
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
@@ -250,6 +250,7 @@
 														echo "No (0)";
 													 ?></td>
 											</tr>
+											
 											<tr>
 												<td class="row-title" title="[book_url]">Book URL</td>
 												<td class="desc" style="overflow: hidden;"><?php 
@@ -410,6 +411,68 @@
 												<td class="row-title" title="[longdesc]">Long Description</td>
 												<td class="desc"><?php echo nl2br(strip_tags(get_post_meta( $post->ID, 'tourcms_wp_longdesc', true ))); ?></td>
 											</tr>
+											
+											<tr class="alternate">
+												<td class="row-title">Languages spoken</td>
+												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_languages_spoken', true ); ?></td>
+											</tr>
+											
+											<tr>
+												<td class="row-title">Grade</td>
+												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_grade', true ); ?></td>
+											</tr>
+											
+											<tr class="alternate">
+												<td class="row-title">Accommodation rating</td>
+												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_accomrating', true ); ?></td>
+											</tr>
+											
+											
+											<tr>
+												<td class="row-title">Tourleader type</td>
+												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_tourleader_type', true ); ?></td>
+											</tr>
+											
+											
+											
+											<tr class="alternate">
+												<td class="row-title">Suitable for</td>
+												<td class="desc"><?php 
+														
+														$suitable_fors = array("solo", "couples", "children", "groups", "students", "business", "wheelchairs");
+														
+														//echo get_post_meta( $post->ID, 'tourcms_wp_suitable_for_solo', true );
+												// Output suitable for
+														$suit_array = array();
+														
+														foreach($suitable_fors as $suitable_for) {
+																												
+															if(get_post_meta( $post->ID, 'tourcms_wp_suitable_for_'.$suitable_for, true )=="1") {				$suit_array[] = ucwords($suitable_for);
+															}															
+														}
+														
+														echo implode(", ", $suit_array);
+														
+												// Output not suitable for (if any)
+														$not_suit_array = array();
+														
+														foreach($suitable_fors as $suitable_for) {
+																												
+															if(get_post_meta( $post->ID, 'tourcms_wp_suitable_for_'.$suitable_for, true )!="1") {
+																$not_suit_array[] = ucwords($suitable_for);
+															}															
+														}
+														
+														if(count($not_suit_array) > 0) {
+															echo "<br />&nbsp;<br />";
+															echo "Not suitable for: ";
+															echo implode(", ", $not_suit_array);
+														}
+														
+														
+													 ?></td>
+											</tr>
+											
 										</tbody>
 									</table>
 									<?php else : ?>
@@ -564,8 +627,24 @@
 				update_post_meta( $post_id, 'tourcms_wp_has_sale_oct', (string)$tour->has_sale_oct);
 				update_post_meta( $post_id, 'tourcms_wp_has_sale_nov', (string)$tour->has_sale_nov);
 				update_post_meta( $post_id, 'tourcms_wp_has_sale_dec', (string)$tour->has_sale_dec);
-			
 				
+				// Number only fields
+				update_post_meta( $post_id, 'tourcms_wp_grade', (string)$tour->grade);
+				update_post_meta( $post_id, 'tourcms_wp_accomrating', (string)$tour->accomrating);
+				update_post_meta( $post_id, 'tourcms_wp_product_type', (string)$tour->product_type);
+				update_post_meta( $post_id, 'tourcms_wp_tourleader_type', (string)$tour->tourleader_type);
+				
+				// Suitable for
+				update_post_meta( $post_id, 'tourcms_wp_suitable_for_solo', (string)$tour->suitable_for_solo);
+				update_post_meta( $post_id, 'tourcms_wp_suitable_for_couples', (string)$tour->suitable_for_couples);
+				update_post_meta( $post_id, 'tourcms_wp_suitable_for_children', (string)$tour->suitable_for_children);
+				update_post_meta( $post_id, 'tourcms_wp_suitable_for_groups', (string)$tour->suitable_for_groups);
+				update_post_meta( $post_id, 'tourcms_wp_suitable_for_students', (string)$tour->suitable_for_students);
+				update_post_meta( $post_id, 'tourcms_wp_suitable_for_business', (string)$tour->suitable_for_business);
+				update_post_meta( $post_id, 'tourcms_wp_suitable_for_wheelchairs', (string)$tour->suitable_for_wheelchairs);
+			
+				// Languages spoken
+				update_post_meta( $post_id, 'tourcms_wp_languages_spoken', (string)$tour->languages_spoken);
 				
 				// Optional fields
 				if(isset($tour->tour_code))
