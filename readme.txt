@@ -1,11 +1,11 @@
 === Tour & Activity Operator Plugin for TourCMS ===
 Contributors: TourCMS
 Tags:
-Version: 1.0.8
+Version: 1.0.9
 Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 Requires at least: 3.0
-Tested up to: 4.1
-Stable tag: 1.0.8
+Tested up to: 4.2.1
+Stable tag: 1.0.9
 
 
 Integrate WordPress with TourCMS to aid creating specialist Tour and Activity Operator websites.
@@ -43,6 +43,10 @@ Full installation instructions are available on our website:
 5. Product types / Locations appear in the Menu editor
 
 == Changelog ==
+
+= 1.0.9 =
+* Added support for alternative tours
+* Tour name now uses full "Tour name long"
 
 = 1.0.8 =
 * Added grade, accom_rating, tourleader_type

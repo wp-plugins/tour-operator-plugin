@@ -3,7 +3,7 @@
 	Plugin Name: TourCMS
 	Plugin URI: http://www.tourcms.com/support/webdesign/wordpress/
 	Description: Integrate WordPress with TourCMS to aid creating specialist Tour, Activity and Accommodation Operator websites.
-	Version: 1.0.8
+	Version: 1.0.9
 	Author: TourCMS
 	Author URI: http://www.tourcms.com
 	*/
@@ -250,7 +250,6 @@
 														echo "No (0)";
 													 ?></td>
 											</tr>
-											
 											<tr>
 												<td class="row-title" title="[book_url]">Book URL</td>
 												<td class="desc" style="overflow: hidden;"><?php 
@@ -413,66 +412,58 @@
 											</tr>
 											
 											<tr class="alternate">
+												<td class="row-title">Suitable for solo</td>
+												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_suitable_for_solo', true ); ?></td>
+											</tr>
+											
+											<tr>
+												<td class="row-title">Suitable for couples</td>
+												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_suitable_for_couples', true ); ?></td>
+											</tr>
+											
+											<tr class="alternate">
+												<td class="row-title">Suitable for children</td>
+												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_suitable_for_children', true ); ?></td>
+											</tr>
+											
+											<tr>
+												<td class="row-title">Suitable for groups</td>
+												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_suitable_for_groups', true ); ?></td>
+											</tr>
+											
+											<tr class="alternate">
+												<td class="row-title">Suitable for business</td>
+												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_suitable_for_business', true ); ?></td>
+											</tr>
+											
+											<tr>
+												<td class="row-title">Suitable for wheelchairs</td>
+												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_suitable_for_wheelchairs', true ); ?></td>
+											</tr>
+											
+											<tr class="alternate">
 												<td class="row-title">Languages spoken</td>
 												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_languages_spoken', true ); ?></td>
 											</tr>
 											
-											<tr>
-												<td class="row-title">Grade</td>
-												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_grade', true ); ?></td>
-											</tr>
-											
-											<tr class="alternate">
-												<td class="row-title">Accommodation rating</td>
-												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_accomrating', true ); ?></td>
-											</tr>
-											
 											
 											<tr>
-												<td class="row-title">Tourleader type</td>
-												<td class="desc"><?php echo get_post_meta( $post->ID, 'tourcms_wp_tourleader_type', true ); ?></td>
+												<td class="row-title">
+													Alternative tours
+												</td>
+												<td>
+													<?php
+													$at_xml = get_post_meta( $post->ID, 'tourcms_wp_alternative_tours', true);
+													if($at_xml != '') {
+													$alternative_tours = simplexml_load_string($at_xml);
+													
+													foreach($alternative_tours->tour as $alternative_tour) {
+														?>
+<a href="<?php echo $alternative_tour->tour_url; ?>" target="_blank"><?php echo $alternative_tour->tour_name_long; ?></a> (<?php echo $alternative_tour->tour_id; ?>)<br />
+														<?php
+													} } ?>
+												</td>
 											</tr>
-											
-											
-											
-											<tr class="alternate">
-												<td class="row-title">Suitable for</td>
-												<td class="desc"><?php 
-														
-														$suitable_fors = array("solo", "couples", "children", "groups", "students", "business", "wheelchairs");
-														
-														//echo get_post_meta( $post->ID, 'tourcms_wp_suitable_for_solo', true );
-												// Output suitable for
-														$suit_array = array();
-														
-														foreach($suitable_fors as $suitable_for) {
-																												
-															if(get_post_meta( $post->ID, 'tourcms_wp_suitable_for_'.$suitable_for, true )=="1") {				$suit_array[] = ucwords($suitable_for);
-															}															
-														}
-														
-														echo implode(", ", $suit_array);
-														
-												// Output not suitable for (if any)
-														$not_suit_array = array();
-														
-														foreach($suitable_fors as $suitable_for) {
-																												
-															if(get_post_meta( $post->ID, 'tourcms_wp_suitable_for_'.$suitable_for, true )!="1") {
-																$not_suit_array[] = ucwords($suitable_for);
-															}															
-														}
-														
-														if(count($not_suit_array) > 0) {
-															echo "<br />&nbsp;<br />";
-															echo "Not suitable for: ";
-															echo implode(", ", $not_suit_array);
-														}
-														
-														
-													 ?></td>
-											</tr>
-											
 										</tbody>
 									</table>
 									<?php else : ?>
@@ -596,7 +587,7 @@
 				update_post_meta( $post_id, 'tourcms_wp_available', (string)$tour->available);	
 				update_post_meta( $post_id, 'tourcms_wp_has_sale', (string)$tour->has_sale);
 				update_post_meta( $post_id, 'tourcms_wp_tour_id', (int)$tour->tour_id);	
-				update_post_meta( $post_id, 'tourcms_wp_tour_name', (string)$tour->tour_name);	
+				update_post_meta( $post_id, 'tourcms_wp_tour_name', (string)$tour->tour_name_long);	
 				update_post_meta( $post_id, 'tourcms_wp_location', (string)$tour->location);	
 				update_post_meta( $post_id, 'tourcms_wp_summary', (string)$tour->summary);	
 				update_post_meta( $post_id, 'tourcms_wp_shortdesc', (string)$tour->shortdesc);	
@@ -753,6 +744,15 @@
 				} else {
 					update_post_meta( $post_id, 'tourcms_wp_document_desc_0' , '');
 					update_post_meta( $post_id, 'tourcms_wp_document_url_0' , '');
+				}
+				
+				// Alternative tours
+				if(!empty($tour->alternative_tours)) {
+					$alternative_tours = $tour->alternative_tours;
+					$alternative_tours_xml = $alternative_tours->asXml();
+					update_post_meta ($post_id, 'tourcms_wp_alternative_tours', $alternative_tours_xml);
+				} else {
+					update_post_meta ($post_id, 'tourcms_wp_alternative_tours', '');
 				}
 				
 				
@@ -972,20 +972,29 @@
 	}
 	
 	// Print out the booking engine
-	function tourcms_wp_dobook() {
+	function tourcms_wp_dobook($url = "", $t = "") {
 		global $post;
 		$continue = false;
-
-		if(is_single() && get_query_var('post_type') == 'tour') {
-			$book_url = get_post_meta( $post->ID, 'tourcms_wp_book_url', true );
-			if($book_url<>"")
-				$continue = true;
+		
+		if($url == "") {
+			if(is_single() && get_query_var('post_type') == 'tour') {
+				$book_url = get_post_meta( $post->ID, 'tourcms_wp_book_url', true );
+				if($book_url<>"")
+					$continue = true;
+			}
+		} else {
+			$book_url = $url;
+			$continue = true;
 		}
 
 		if($continue) {
 			// Get our settings / defaults
 			$book_style = get_option('tourcms_wp_bookstyle')=="" ? "link" : get_option('tourcms_wp_bookstyle');
-			$book_text = get_option('tourcms_wp_booktext')=="" ? __( 'Book Online', 'tourcms_wp' ) : get_option('tourcms_wp_booktext');
+			if($t == "") {
+				$book_text = get_option('tourcms_wp_booktext')=="" ? __( 'Book Online', 'tourcms_wp' ) : get_option('tourcms_wp_booktext');
+			} else {
+				$book_text = $t;
+			}
 			$book_height = get_option('tourcms_wp_bookheight')=="" ? "600" : get_option('tourcms_wp_bookheight');
 			$book_width = get_option('tourcms_wp_bookwidth')=="" ? "600" : get_option('tourcms_wp_bookwidth');
 			$book_params = get_option('tourcms_wp_bookqs')=="" ? "" : get_option('tourcms_wp_bookqs');
